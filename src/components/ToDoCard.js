@@ -11,14 +11,16 @@ export default function TodoCard({
   created_at = new Date(),
   id = 0,
   onDelete = () => {},
+  onDetail = () => {},
 }) {
   return (
     <Box className="w-full">
       <Card
         variant="outlined"
-        className="drop-shadow-md pb-2 px-4"
+        className="drop-shadow-md pb-2 px-4 cursor-pointer"
         sx={{borderRadius: 4, height: 234}}
         data-cy="activity-item"
+        onClick={() => onDetail(id)}
       >
         <div className="flex flex-col justify-between h-full">
           <CardContent>
@@ -42,6 +44,7 @@ export default function TodoCard({
               alt={ActivityItemDeleteButtonSvg}
               onClick={() => onDelete({id, title})}
               data-cy="activity-item-delete-button"
+              role="button"
             />
           </CardActions>
         </div>

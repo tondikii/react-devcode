@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import Navbar from "../components/Navbar";
 import AddButton from "../components/AddButton";
 import ActivityEmptyStateSvg from "../assets/activity-empty-state.svg";
@@ -6,8 +6,11 @@ import {api} from "../config/api";
 import TodoCard from "../components/ToDoCard";
 import ModalDelete from "../components/ModalDelete";
 import ModalAlert from "../components/ModalAlert";
+import {useNavigate} from "react-router-dom";
 
 export default function HomePage() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -58,6 +61,9 @@ export default function HomePage() {
       setItem({id, title});
       toggleModalDelete();
     };
+    const onClickDetail = (id) => {
+      navigate(`/detail/${id}`);
+    };
     if (loading)
       return (
         <span className="text-black-custom text-2xl font-semibold">
@@ -71,6 +77,7 @@ export default function HomePage() {
           className="w-2/3 h-2/3 cursor-pointer"
           alt={ActivityEmptyStateSvg}
           onClick={onClickAdd}
+          data-cy="activity-empty-state"
         />
       );
     return (
@@ -82,6 +89,7 @@ export default function HomePage() {
             created_at={e?.created_at}
             id={e?.id}
             onDelete={onClickDelete}
+            onDetail={onClickDetail}
           />
         ))}
       </div>
