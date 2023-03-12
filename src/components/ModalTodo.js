@@ -1,0 +1,155 @@
+import {useEffect, useState} from "react";
+import {
+  Modal,
+  Box,
+  Divider,
+  IconButton,
+  TextField,
+  Button,
+  CircularProgress,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import Select from "react-select";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 830,
+  height: 403,
+  borderRadius: "12px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  "&:focus": {
+    outline: "none",
+  },
+};
+
+const colourOptions = [
+  {value: "very-high", label: "Very High", color: "#ED4C5C"},
+  {value: "high", label: "High", color: "#F8A541"},
+  {value: "medium", label: "Medium", color: "#00A790"},
+  {value: "low", label: "Low", color: "#428BC1"},
+  {value: "very-low", label: "Very Low", color: "#8942C1"},
+];
+
+const dot = (color = "transparent") => ({
+  alignItems: "center",
+  display: "flex",
+
+  ":before": {
+    backgroundColor: color,
+    borderRadius: 10,
+    content: '" "',
+    display: "block",
+    marginRight: 8,
+    height: 10,
+    width: 10,
+  },
+});
+
+const colourStyles = {
+  control: (styles) => ({...styles, backgroundColor: "white"}),
+  option: (styles, {data}) => ({...styles, ...dot(data?.color)}),
+  input: (styles) => ({...styles, ...dot()}),
+  placeholder: (styles) => ({...styles, ...dot("#ccc")}),
+  singleValue: (styles, {data}) => ({...styles, ...dot(data.color)}),
+};
+
+export default function ModalTodo({
+  open = false,
+  handleClose = () => {},
+  onSubmit = () => {},
+  loading = false,
+}) {
+  const [todoForm, setTodoForm] = useState({
+    priority: "very-high",
+    title: "",
+  });
+
+  useEffect(() => {
+    setTodoForm({
+      priority: "very-high",
+      title: "",
+    });
+  }, [open]);
+
+  return (
+    <Modal open={open} onClose={handleClose}>
+      <Box sx={style}>
+        <div className="p-4 flex justify-between items-center">
+          <span className="text-lg font-medium" data-cy="modal-add-title">
+            Tambah List Item
+          </span>
+          <IconButton onClick={handleClose} data-cy="modal-add-close-button">
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Divider />
+
+        <div className="p-8">
+          <div className="mb-4 flex flex-col">
+            <label
+              className="text-sm font-semibold mb-1"
+              data-cy="modal-add-name-title"
+            >
+              NAMA LIST ITEM
+            </label>
+            <TextField
+              variant="outlined"
+              placeholder="Tambahkan nama list item"
+              value={todoForm?.title}
+              onChange={(e) =>
+                setTodoForm({...todoForm, title: e?.target?.value})
+              }
+              data-cy="modal-add-name-input"
+            />
+          </div>
+          <div
+            className="flex flex-col w-1/4"
+            data-cy="modal-add-priority-item, modal-add-priority-dropdown"
+          >
+            <label
+              className="text-sm font-semibold mb-1"
+              data-cy="modal-add-priority-title"
+            >
+              PRIORITY
+            </label>
+            <Select
+              options={colourOptions}
+              styles={colourStyles}
+              value={
+                colourOptions.find((e) => e?.value === todoForm?.priority) ||
+                null
+              }
+              onChange={(e) => setTodoForm({...todoForm, priority: e?.value})}
+            />
+          </div>
+        </div>
+        <Divider />
+        <div className="flex flex-row-reverse items-center p-6">
+          <Button
+            type="submit"
+            variant="contained"
+            className="rounded bg-primary add-button"
+            style={{textTransform: "none"}}
+            disabled={!todoForm?.title || loading}
+            onClick={() => onSubmit(todoForm)}
+            data-cy="modal-add-save-button"
+          >
+            <div className="py-2 px-5 flex flex-col justify-center">
+              {loading ? (
+                <CircularProgress size={20} />
+              ) : (
+                <span className="font-semibold ml-1 text-lg font-poppins">
+                  Simpan
+                </span>
+              )}
+            </div>
+          </Button>
+        </div>
+      </Box>
+    </Modal>
+  );
+}

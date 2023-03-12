@@ -77,6 +77,13 @@
   border-radius: 45px !important;
 }
 
+.add-button:disabled {
+  opacity: 0.4;
+  pointer-events: auto !important;
+  cursor: not-allowed !important;
+  color: #ffffff !important;
+}
+
 .page-container {
   background-color: #e5e5e5 !important;
   min-height: 100vh;
