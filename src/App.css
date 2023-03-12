@@ -1,0 +1,88 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bg-primary {
+  background-color: #16abf8 !important;
+}
+
+.btn-secondary {
+  background-color: #f4f4f4 !important;
+  color: #4a4a4a !important;
+  border-radius: 45px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.btn-danger {
+  background-color: #ed4c5c !important;
+  color: #ffffff !important;
+  border-radius: 45px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.text-primary {
+  color: #16abf8 !important;
+}
+
+.text-secondary {
+  color: #888888 !important;
+}
+
+.text-success {
+  color: #00a790 !important;
+}
+
+.text-black-custom {
+  color: #111111 !important;
+}
+
+.add-button {
+  border-radius: 45px !important;
+}
+
+.page-container {
+  background-color: #e5e5e5 !important;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.font-poppins {
+  font-family: "Poppins", sans-serif;
+}
