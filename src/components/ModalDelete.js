@@ -20,8 +20,9 @@ const style = {
 export default function ModalDelete({
   open = false,
   handleClose = () => {},
-  title = "Meeting dengan Client",
+  title = "",
   onDelete = () => {},
+  isTodo,
 }) {
   return (
     <Modal open={open} onClose={handleClose} data-cy="todo-modal-delete">
@@ -37,7 +38,8 @@ export default function ModalDelete({
             className="text-lg text-center mt-2 mb-4 font-medium"
             data-cy="modal-delete-title"
           >
-            Apakah anda yakin menghapus activity <strong>“{title}”</strong>?
+            Apakah anda yakin menghapus {isTodo ? "List Item" : "activity"}{" "}
+            <strong>“{title}”</strong>?
           </p>
           <div className="flex flex-row mt-2">
             <button

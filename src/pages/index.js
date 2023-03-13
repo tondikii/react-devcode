@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import Navbar from "../components/Navbar";
 import AddButton from "../components/AddButton";
 import ActivityEmptyStateSvg from "../assets/activity-empty-state.svg";
@@ -97,7 +97,7 @@ export default function HomePage() {
   };
 
   return (
-    <>
+    <Fragment>
       <ModalDelete
         open={showModalDelete}
         handleClose={toggleModalDelete}
@@ -124,6 +124,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }

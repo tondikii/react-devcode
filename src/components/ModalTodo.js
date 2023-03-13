@@ -77,7 +77,6 @@ export default function ModalTodo({
   }, [open]);
 
   useEffect(() => {
-    console.log({data});
     if (data?.id) {
       setTodoForm(data);
     }

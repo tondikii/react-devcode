@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {api} from "../../config/api";
 
@@ -6,12 +6,14 @@ import ToDoBackButtonSvg from "../../assets/todo-back-button.svg";
 import ToDoSortButtonSvg from "../../assets/todo-sort-button.svg";
 import ToDoTitleEditButtonSvg from "../../assets/todo-title-edit-button.svg";
 import ToDoEmptyStateSvg from "../../assets/todo-empty-state.svg";
-import ToDoListCard from "../../components/ToDoListCard";
 
 import TextField from "@mui/material/TextField";
+import ToDoListCard from "../../components/ToDoListCard";
 import Navbar from "../../components/Navbar";
 import AddButton from "../../components/AddButton";
 import ModalTodo from "../../components/ModalTodo";
+import ToggleFilter from "../../components/ToggleFilter";
+import ModalDelete from "../../components/ModalDelete";
 
 export default function DetailPage() {
   const navigate = useNavigate();
@@ -27,15 +29,27 @@ export default function DetailPage() {
   const [isEditting, setIsEditting] = useState(false);
   const [showModalTodo, setShowModalTodo] = useState(false);
   const [selectedTodoItem, setSelectedTodoItem] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState("");
+  const [tempTodoItems, setTempTodoItems] = useState([]);
+  const [showModalDelete, setShowModalDelete] = useState(false);
 
+  const open = Boolean(anchorEl);
+
+  const handleClickFilter = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseFilter = () => {
+    setAnchorEl(null);
+  };
+
+  const toggleModalDelete = () => setShowModalDelete(!showModalDelete);
   const toggleEditting = (e) => {
     if (isEditting) {
       handleUpdateTitle(e);
     }
     setIsEditting(!isEditting);
   };
-
-  console.log({isEditting});
 
   const toggleModalTodo = () => {
     setShowModalTodo(!showModalTodo);
@@ -47,10 +61,19 @@ export default function DetailPage() {
       .get(`/activity-groups/${id}`)
       .then(({data}) => {
         setItem(data || {});
+        setTempTodoItems(data?.todo_items || []);
       })
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  const handleDelete = () => {
+    api.delete(`/todo-items/${selectedTodoItem?.id}`).then(() => {
+      getOneActivity();
+      toggleModalDelete();
+      selectedTodoItem({});
+    });
   };
 
   const handleUpdateTitle = (e) => {
@@ -75,7 +98,6 @@ export default function DetailPage() {
   const handleSubmitTodo = (todoForm) => {
     setLoadingCreate(true);
     const payload = {...todoForm, activity_group_id: id};
-    console.log({payload});
     if (payload?.id) {
       api
         .patch(`/todo-items/${selectedTodoItem?.id}`, {
@@ -134,6 +156,10 @@ export default function DetailPage() {
               key={todoItem?.id}
               onEdit={onEditTodoItem}
               onCheck={handleCheckTodo}
+              onDelete={() => {
+                toggleModalDelete();
+                setSelectedTodoItem(todoItem);
+              }}
             />
           </div>
         ))}
@@ -146,8 +172,64 @@ export default function DetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const todoItems = [...tempTodoItems];
+    switch (selectedFilter) {
+      case "Terbaru":
+        setItem({...item, todo_items: todoItems});
+        break;
+      case "Terlama":
+        setItem({...item, todo_items: todoItems.reverse()});
+        break;
+      case "A-Z":
+        todoItems.sort((a, b) => {
+          const nameA = a.title.toUpperCase(); // ignore upper and lowercase
+          const nameB = b.title.toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          // names must be equal
+          return 0;
+        });
+        setItem({...item, todo_items: todoItems});
+        break;
+      case "Z-A":
+        todoItems.sort((a, b) => {
+          const nameA = a.title.toUpperCase(); // ignore upper and lowercase
+          const nameB = b.title.toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return 1;
+          }
+          if (nameA > nameB) {
+            return -1;
+          }
+          // names must be equal
+          return 0;
+        });
+        setItem({...item, todo_items: todoItems});
+        break;
+      case "Belum Selesai":
+        todoItems.sort((a, b) => a?.is_active - b?.is_active);
+        setItem({...item, todo_items: todoItems.reverse()});
+        break;
+      default:
+        setItem({...item, todo_items: todoItems});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilter]);
+
   return (
-    <>
+    <Fragment>
+      <ModalDelete
+        open={showModalDelete}
+        handleClose={toggleModalDelete}
+        title={item?.title}
+        onDelete={handleDelete}
+        isTodo
+      />
       <ModalTodo
         open={showModalTodo}
         handleClose={toggleModalTodo}
@@ -205,6 +287,14 @@ export default function DetailPage() {
                   className="w-18 h-18 cursor-pointer mr-4"
                   data-cy="todo-sort-button"
                   role="button"
+                  onClick={handleClickFilter}
+                />
+                <ToggleFilter
+                  open={open}
+                  anchorEl={anchorEl}
+                  handleClose={handleCloseFilter}
+                  selected={selectedFilter}
+                  setSelected={setSelectedFilter}
                 />
                 <AddButton dataCy="todo-add-button" onClick={toggleModalTodo} />
               </div>
@@ -215,6 +305,6 @@ export default function DetailPage() {
           </div>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }
