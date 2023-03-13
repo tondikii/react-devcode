@@ -29,7 +29,7 @@ const style = {
 const colourOptions = [
   {value: "very-high", label: "Very High", color: "#ED4C5C"},
   {value: "high", label: "High", color: "#F8A541"},
-  {value: "medium", label: "Medium", color: "#00A790"},
+  {value: "normal", label: "Medium", color: "#00A790"},
   {value: "low", label: "Low", color: "#428BC1"},
   {value: "very-low", label: "Very Low", color: "#8942C1"},
 ];
@@ -62,6 +62,7 @@ export default function ModalTodo({
   handleClose = () => {},
   onSubmit = () => {},
   loading = false,
+  data = {},
 }) {
   const [todoForm, setTodoForm] = useState({
     priority: "very-high",
@@ -75,12 +76,19 @@ export default function ModalTodo({
     });
   }, [open]);
 
+  useEffect(() => {
+    console.log({data});
+    if (data?.id) {
+      setTodoForm(data);
+    }
+  }, [data]);
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
         <div className="p-4 flex justify-between items-center">
           <span className="text-lg font-medium" data-cy="modal-add-title">
-            Tambah List Item
+            {data?.id ? "Edit" : "Tambah"} List Item
           </span>
           <IconButton onClick={handleClose} data-cy="modal-add-close-button">
             <CloseIcon />

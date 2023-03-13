@@ -49,6 +49,26 @@
   font-weight: 600;
 }
 
+.bg-very-high {
+  background-color: #ed4c5c !important;
+}
+
+.bg-high {
+  background-color: #f8a541 !important;
+}
+
+.bg-medium {
+  background-color: #00a790 !important;
+}
+
+.bg-low {
+  background-color: #428bc1 !important;
+}
+
+.bg-very-low {
+  background-color: #8942c1 !important;
+}
+
 .btn-danger {
   background-color: #ed4c5c !important;
   color: #ffffff !important;
@@ -92,4 +112,10 @@
 
 .font-poppins {
   font-family: "Poppins", sans-serif;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  @apply rounded-full;
 }

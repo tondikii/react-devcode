@@ -6,6 +6,7 @@ import ToDoBackButtonSvg from "../../assets/todo-back-button.svg";
 import ToDoSortButtonSvg from "../../assets/todo-sort-button.svg";
 import ToDoTitleEditButtonSvg from "../../assets/todo-title-edit-button.svg";
 import ToDoEmptyStateSvg from "../../assets/todo-empty-state.svg";
+import ToDoListCard from "../../components/ToDoListCard";
 
 import TextField from "@mui/material/TextField";
 import Navbar from "../../components/Navbar";
@@ -25,6 +26,7 @@ export default function DetailPage() {
   const [loadingCreate, setLoadingCreate] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
   const [showModalTodo, setShowModalTodo] = useState(false);
+  const [selectedTodoItem, setSelectedTodoItem] = useState({});
 
   const toggleEditting = (e) => {
     if (isEditting) {
@@ -58,22 +60,55 @@ export default function DetailPage() {
     });
   };
 
-  const handleCreateTodo = (todoForm) => {
-    setLoadingCreate(true);
-    const payload = {...todoForm, activity_group_id: id};
-    console.log({payload});
+  const handleCheckTodo = (todoItem) => {
     api
-      .post("/todo-items", payload)
-      .then(() => {
-        toggleModalTodo();
-        getOneActivity();
+      .patch(`/todo-items/${todoItem?.id}`, {
+        is_active: todoItem?.is_active ? 0 : 1,
       })
-      .finally(() => {
-        setLoadingCreate(false);
+      .then(() => {
+        api.get(`/activity-groups/${id}`).then(({data}) => {
+          setItem(data || {});
+        });
       });
   };
 
+  const handleSubmitTodo = (todoForm) => {
+    setLoadingCreate(true);
+    const payload = {...todoForm, activity_group_id: id};
+    console.log({payload});
+    if (payload?.id) {
+      api
+        .patch(`/todo-items/${selectedTodoItem?.id}`, {
+          is_active: payload?.is_active,
+          priority: payload?.priority,
+          title: payload?.title,
+        })
+        .then(() => {
+          toggleModalTodo();
+          getOneActivity();
+          setSelectedTodoItem({});
+        })
+        .finally(() => {
+          setLoadingCreate(false);
+        });
+    } else {
+      api
+        .post("/todo-items", payload)
+        .then(() => {
+          toggleModalTodo();
+          getOneActivity();
+        })
+        .finally(() => {
+          setLoadingCreate(false);
+        });
+    }
+  };
+
   const Content = () => {
+    const onEditTodoItem = (todoItem) => {
+      setSelectedTodoItem(todoItem);
+      toggleModalTodo();
+    };
     if (loading)
       return (
         <span className="text-black-custom text-2xl font-semibold">
@@ -91,15 +126,19 @@ export default function DetailPage() {
         />
       );
     return (
-      <img
-        src={ToDoEmptyStateSvg}
-        className="w-7/12 h-7/12 cursor-pointer"
-        alt={ToDoEmptyStateSvg}
-        onClick={toggleModalTodo}
-        data-cy="todo-empty-state"
-      />
+      <div className="flex flex-col w-full mt-4">
+        {item?.todo_items.map((todoItem) => (
+          <div className="mb-2">
+            <ToDoListCard
+              data={todoItem}
+              key={todoItem?.id}
+              onEdit={onEditTodoItem}
+              onCheck={handleCheckTodo}
+            />
+          </div>
+        ))}
+      </div>
     );
-    // return <h1>content</h1>;
   };
 
   useEffect(() => {
@@ -112,8 +151,9 @@ export default function DetailPage() {
       <ModalTodo
         open={showModalTodo}
         handleClose={toggleModalTodo}
-        onSubmit={handleCreateTodo}
+        onSubmit={handleSubmitTodo}
         loading={loadingCreate}
+        data={selectedTodoItem}
       />
       <div className="page-container">
         <Navbar />
