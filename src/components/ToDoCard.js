@@ -20,10 +20,9 @@ export default function TodoCard({
         className="drop-shadow-md pb-2 px-4 cursor-pointer"
         sx={{borderRadius: 4, height: 234}}
         data-cy="activity-item"
-        onClick={() => onDetail(id)}
       >
         <div className="flex flex-col justify-between h-full">
-          <CardContent>
+          <CardContent onClick={() => onDetail(id)}>
             <strong
               className="font-bold text-black-custom text-lg"
               data-cy="activity-item-title"
@@ -35,6 +34,7 @@ export default function TodoCard({
             <span
               className="text-sm text-secondary font-semibold"
               data-cy="activity-item-date"
+              onClick={() => onDetail(id)}
             >
               {moment(created_at).locale("id").format("DD MMMM YYYY")}
             </span>
