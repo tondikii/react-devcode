@@ -23,7 +23,7 @@ export default function HomePage() {
   const getActivity = () => {
     setLoading(true);
     api
-      .get("/activity-groups?email=tondiki@skyshi.com")
+      .get(`/activity-groups?email=${localStorage?.email}`)
       .then(({data}) => {
         setData(data?.data || []);
       })
@@ -41,7 +41,7 @@ export default function HomePage() {
     api
       .post("/activity-groups", {
         title: "New Activity",
-        email: "tondiki@skyshi.com",
+        email: localStorage?.email,
       })
       .then(() => {
         getActivity();
