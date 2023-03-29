@@ -17,12 +17,11 @@ export default function TodoCard({
     <Box className="w-full">
       <Card
         variant="outlined"
-        className="drop-shadow-md pb-2 px-4 cursor-pointer"
-        sx={{borderRadius: 4, height: 234}}
+        className="drop-shadow-md pb-2 px-4 cursor-pointer h-48 lg:h-60 !rounded-xl lg:!rounded-2xl"
         data-cy="activity-item"
       >
         <div className="flex flex-col justify-between h-full">
-          <CardContent onClick={() => onDetail(id)}>
+          <CardContent onClick={() => onDetail(id)} className="h-full">
             <strong
               className="font-bold text-black-custom text-lg"
               data-cy="activity-item-title"

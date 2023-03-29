@@ -13,9 +13,11 @@ export default function AddButton({
       onClick={onClick}
       style={{textTransform: "none"}}
     >
-      <div className="flex flex-row py-2 px-4">
+      <div className="flex flex-row lg:py-2 lg:px-4">
         <AddIcon />
-        <span className="font-semibold ml-1 text-lg font-poppins">Tambah</span>
+        <span className="font-semibold ml-1 lg:text-lg font-poppins">
+          Tambah
+        </span>
       </div>
     </Button>
   );

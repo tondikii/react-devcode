@@ -81,7 +81,7 @@ export default function HomePage() {
         />
       );
     return (
-      <div className="grid gap-4 grid-cols-4 w-full">
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4 w-full">
         {data.map((e) => (
           <TodoCard
             key={e?.id}
@@ -108,10 +108,10 @@ export default function HomePage() {
       <div className="page-container">
         <Navbar />
         <div>
-          <div className="flex flex-col mx-56">
-            <div className="flex flex-row justify-between items-center my-12">
+          <div className="flex flex-col px-4 lg:mx-56">
+            <div className="flex flex-row justify-between items-center mt-20 lg:mt-48 lg:mt-24 mb-4 lg:mb-12">
               <h2
-                className="text-black-custom text-4xl font-bold"
+                className="text-black-custom text-xl lg:text-4xl font-bold"
                 data-cy="activity-title"
               >
                 Activity

@@ -5,12 +5,12 @@ import {gapi} from "gapi-script";
 import LoginSvg from "../../assets/login.svg";
 import IconGoogleSvg from "../../assets/icon-google.svg";
 
-const clientId = process.env.REACT_APP_CLIENT_ID;
+const clientId = process.env.REACT_APP_CLIENT_ID_DEV;
 
 const CustomLoginButton = (props) => {
   return (
     <button
-      className="bg-primary p-2 rounded-lg w-4/5 text-white flex flex-row justify-center"
+      className="bg-primary p-2 rounded-lg w-2/3 text-white flex flex-row justify-center"
       onClick={props.onClick}
     >
       <img src={IconGoogleSvg} alt={IconGoogleSvg} className="w-7 h-7" />
