@@ -16,8 +16,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 830,
-  height: 403,
+  // width: 830,
+  // height: 403,
   borderRadius: "12px",
   bgcolor: "background.paper",
   boxShadow: 24,
@@ -84,21 +84,25 @@ export default function ModalTodo({
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Box sx={style}>
-        <div className="p-4 flex justify-between items-center">
+      <Box sx={style} className="w-11/12 lg:w-7/12">
+        <div className="px-4 md:px-4 py-2 md:py-4 flex justify-between items-center">
           <span className="text-lg font-medium" data-cy="modal-add-title">
             {data?.id ? "Edit" : "Tambah"} List Item
           </span>
-          <IconButton onClick={handleClose} data-cy="modal-add-close-button">
+          <IconButton
+            onClick={handleClose}
+            data-cy="modal-add-close-button"
+            className="p-0 md:p-2"
+          >
             <CloseIcon />
           </IconButton>
         </div>
         <Divider />
 
-        <div className="p-8">
+        <div className="p-4 lg:p-8">
           <div className="mb-4 flex flex-col">
             <label
-              className="text-sm font-semibold mb-1"
+              className="text-xs md:text-sm font-semibold mb-1"
               data-cy="modal-add-name-title"
             >
               NAMA LIST ITEM
@@ -114,7 +118,7 @@ export default function ModalTodo({
             />
           </div>
           <div
-            className="flex flex-col w-1/4"
+            className="flex flex-col w-1/2 md:w-2/5 lg:w-1/4"
             data-cy="modal-add-priority-item, modal-add-priority-dropdown"
           >
             <label
@@ -145,11 +149,11 @@ export default function ModalTodo({
             onClick={() => onSubmit(todoForm)}
             data-cy="modal-add-save-button"
           >
-            <div className="py-2 px-5 flex flex-col justify-center">
+            <div className="py-1 lg:py-2 px-2 lg:px-5 flex flex-col justify-center">
               {loading ? (
                 <CircularProgress size={20} />
               ) : (
-                <span className="font-semibold ml-1 text-lg font-poppins">
+                <span className="font-semibold ml-1 text-base lg:text-lg font-poppins">
                   Simpan
                 </span>
               )}

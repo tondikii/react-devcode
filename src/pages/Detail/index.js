@@ -141,7 +141,7 @@ export default function DetailPage() {
       return (
         <img
           src={ToDoEmptyStateSvg}
-          className="w-7/12 h-7/12 cursor-pointer"
+          className="w-4/5 md:w-2/3 lg:w-7/12 lg:h-7/12 cursor-pointer mt-12 lg:mt-0"
           alt={ToDoEmptyStateSvg}
           onClick={toggleModalTodo}
           data-cy="todo-empty-state"
@@ -240,13 +240,13 @@ export default function DetailPage() {
       <div className="page-container">
         <Navbar />
         <div>
-          <div className="flex flex-col mx-56">
-            <div className="flex flex-row justify-between items-center my-12">
+          <div className="flex flex-col mx-4 lg:mx-56">
+            <div className="flex flex-row justify-between items-center mt-20 lg:mt-48 lg:mt-24 mb-4 lg:mb-12">
               <div className="flex flex-row items-center">
                 <img
                   src={ToDoBackButtonSvg}
                   alt={ToDoBackButtonSvg}
-                  className="w-9 h-9 mr-4 cursor-pointer"
+                  className="w-5 h-5 md:w-7 md:h-7 lg:w-9 lg:h-9 mr-2 lg:mr-4 cursor-pointer"
                   onClick={() => navigate(-1)}
                   data-cy="todo-back-button"
                   role="button"
@@ -264,7 +264,7 @@ export default function DetailPage() {
                   </form>
                 ) : (
                   <h2
-                    className="text-black-custom text-4xl font-bold"
+                    className="text-black-custom text-lg md:text-2xl lg:text-4xl font-bold"
                     data-cy="todo-title"
                   >
                     {item?.title}
@@ -274,7 +274,7 @@ export default function DetailPage() {
                 <img
                   src={ToDoTitleEditButtonSvg}
                   alt={ToDoTitleEditButtonSvg}
-                  className="w-7 h-7 cursor-pointer ml-4"
+                  className="w-5 h-5 lg:w-7 lg:h-7 cursor-pointer ml-2 lg:ml-4"
                   data-cy="todo-title-edit-button"
                   role="button"
                   onClick={toggleEditting}
@@ -284,7 +284,7 @@ export default function DetailPage() {
                 <img
                   src={ToDoSortButtonSvg}
                   alt={ToDoSortButtonSvg}
-                  className="w-18 h-18 cursor-pointer mr-4"
+                  className="w-12 h-12 lg:w-18 w-12 h-12 lg:h-18 cursor-pointer mr-2 lg:mr-4"
                   data-cy="todo-sort-button"
                   role="button"
                   onClick={handleClickFilter}

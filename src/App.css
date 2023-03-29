@@ -113,9 +113,3 @@
 .font-poppins {
   font-family: "Poppins", sans-serif;
 }
-
-.dot {
-  width: 14px;
-  height: 14px;
-  @apply rounded-full;
-}
